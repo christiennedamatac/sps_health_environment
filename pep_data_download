@@ -1,0 +1,11 @@
+#!/bin/bash
+# PEP
+#If you have installed PEP, you can download PEP by running the following in the "PEP Command prompt"
+#This will download the data to PATH/WHERE/YOU/WANT/TO/STORE/THE/DATA/pulled-data
+#More details on the use of PEP can be found in the documentation: https://gitlab.pep.cs.ru.nl/pep-public/user-docs/-/wikis/home
+
+PROJECT_DIR=~/Desktop/
+TOKEN=~/Desktop/ChristienneDamatac_SensoryProcessingSensitivity.json
+
+cd $PROJECT_DIR
+pepcli --oauth-token $TOKEN pull -P Participants.300pps -C post_qst_sensory_processing_sensitivity -C pre_qst_SLS_3 -C post_qst_OCM_3 -C post_qst_adults_ADHD_self-report_scale -C post_qst_autistic_traits -C post_qst_IDS_3 -C post_qst_STS_3 -C post_qst_PSS_3 -C post_qst_UBO_3 -C post_qst_CTQ_2 -C post_qst_BIG-5_NEO-FFI-3
