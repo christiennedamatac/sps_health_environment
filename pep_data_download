@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# INSTALL AND RUN PEP
+# INSTALL AND RUN PEP 
+
 # PEP can be installed on local machine or on computing cluster. For this project, the PEP docker image was converted into a Singularity image (.simg), then moved to a local home directory. From here, .simg can be run in an interactive job on the cluster or directly in local machine.
 # https://gitlab.pep.cs.ru.nl/pep-public/user-docs/-/wikis/Using-pepcli-with-docker
 module load singularity
@@ -8,10 +9,41 @@ singularity run ~/Desktop/pep-client.simg
 echo "Singularity container ("Apptainer") is now the bash shell; /home and /project directories remain accessible."
 
 # DOWNLOAD DATA
+
 # https://gitlab.pep.cs.ru.nl/pep-public/user-docs/-/wikis/Uploading-and-downloading-data#downloading-data
 PROJECT_DIR=~/Desktop
 TOKEN=ChristienneDamatac_SensoryProcessingSensitivity.json
-OUT_DIR=$PROJECT_DIR/pulled-data_2022_05_24
+DATA_DIR=$PROJECT_DIR/pulled-data_2022_05_24
 cd $PROJECT_DIR
-mkdir $OUT_DIR
-/app/pepcli --client-working-directory /config --oauth-token $TOKEN pull -o $OUT_DIR -P Participants.300pps -C post_qst_sensory_processing_sensitivity -C pre_qst_SLS_3 -C post_qst_OCM_3 -C post_qst_adults_ADHD_self-report_scale -C post_qst_autistic_traits -C post_qst_IDS_3 -C post_qst_STS_3 -C post_qst_PSS_3 -C post_qst_UBO_3 -C post_qst_CTQ_2 -C post_qst_BIG-5_NEO-FFI-3 -C pre_qst_LISS_background_variables
+mkdir $DATA_DIR
+/app/pepcli --client-working-directory /config --oauth-token $TOKEN pull -o $DATA_DIR -P Participants.300pps -C post_qst_sensory_processing_sensitivity -C pre_qst_SLS_3 -C post_qst_OCM_3 -C post_qst_adults_ADHD_self-report_scale -C post_qst_autistic_traits -C post_qst_IDS_3 -C post_qst_STS_3 -C post_qst_PSS_3 -C post_qst_UBO_3 -C post_qst_CTQ_2 -C post_qst_BIG-5_NEO-FFI-3 -C pre_qst_LISS_background_variables
+exit
+
+# RENAME
+
+PROJECT_DIR=~/Desktop
+DATA_DIR=$PROJECT_DIR/pulled-data_2022_05_24
+ANALYSIS_DIR=$PROJECT_DIR/analysis_sps_health_environment
+cd $DATA_DIR
+while read HBS IID; do
+mv ${HBS} ${IID} # Rename directories because HBS anonymyzed data have long and nonsensical names
+for FILE in ${IID}/*; do 
+mv -- "$FILE" "${FILE}_${IID}.zip" # Rename files because all downloaded files were actually zip files, but the extensions get lost in the PEP system 
+done
+done < $ANALYSIS_DIR/subject_list_24-05-2022
+
+# Unzip files 
+while read HBS IID; do
+unzip -d ${IID}/ "${IID}/*"
+done < $ANALYSIS_DIR/subject_list_24-05-2022
+
+# Append unzipped .csv files with subject ID suffix
+while read HBS IID; do
+for FILE in ${IID}/*.csv; do 
+mv $FILE ${FILE%.csv}_${IID}.csv
+done
+done < $ANALYSIS_DIR/subject_list_24-05-2022
+
+# Move all .csv files to analysis folder
+mv */*.csv $ANALYSIS_DIR/
+cd $ANALYSIS_DIR
