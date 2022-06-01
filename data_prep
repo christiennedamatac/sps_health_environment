@@ -1,1 +1,32 @@
 #!/bin/bash
+
+PROJECT_DIR=~/Desktop
+ANALYSIS_DIR=$PROJECT_DIR/analysis_sps_health_environment
+SUBJECTS=$ANALYSIS_DIR/subject_list_24-05-2022
+QUESTIONNAIRES='ASR ATQ BIG CTQ IDS OCM PSS SLS SPS STS UBO'
+
+
+cd $ANALYSIS_DIR
+
+
+# for each subject file, insert filename as first column  
+for q in QUESTIONNAIRES; do
+mkdir temp temp/${q}
+for FILE in *.csv; do 
+awk '{print FILENAME","$0}' ${q}/$FILE > temp/${q}/$FILE.copy
+done
+
+# for each copy file, delete first row 
+
+# CREATE HEADER
+# copy another data frame and replace filename on top row with "IID" (this will be the header)
+sed '1s/Seq. Name/transcript_id/' <filename> > temp/header
+# delete second row
+
+# CONCATENATE 
+# for each questionnaire, stack tables vertically across header + subjects
+header a.txt b.txt > out.txt
+
+rm -r temp
+
+
