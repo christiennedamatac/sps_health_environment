@@ -3,30 +3,21 @@
 PROJECT_DIR=~/Desktop
 ANALYSIS_DIR=$PROJECT_DIR/analysis_sps_health_environment
 SUBJECTS=$ANALYSIS_DIR/subject_list_24-05-2022
-QUESTIONNAIRES='ASR ATQ BIG CTQ IDS OCM PSS SLS SPS STS UBO'
-
+QUESTIONNAIRES="ASR ATQ BIG CTQ IDS OCM PSS SLS SPS STS UBO"
 
 cd $ANALYSIS_DIR
-
-
-# for each subject file, insert filename as first column  
-for q in QUESTIONNAIRES; do
-mkdir temp temp/${q}
-for FILE in *.csv; do 
-awk '{print FILENAME","$0}' ${q}/$FILE > temp/${q}/$FILE.copy
+rm -r temp
+$QUESTIONNAIRES
+for Q in SPS; do
+mkdir -p temp temp/${Q} # create a temporary directory for each questionnaire
+for FILE in ${Q}/*.csv; do 
+awk '{print FILENAME","$0}' $FILE > temp/$FILE.copy # insert filename as first column
+done
+cat temp/${Q}/* > temp/${Q}/${Q}_all_merged.csv # concatenate all subject tables vertically
+awk '/Completion_Date/&&c++>0 {next} 1' temp/${Q}/${Q}_all_merged.csv > temp/${Q}/${Q}_all_merged_header.csv # remove every row that matches this pattern except for the first instance
+awk '{sub(/.*sub/,"sub",$1); print}' temp/${Q}/${Q}_all_merged_header.csv > temp/${Q}/${Q}_all_merged_header_sub.csv # remove everything before "sub" in the first column
+awk '{ sub(/\.csv/, "", $1) }1' temp/${Q}/${Q}_all_merged_header_sub.csv > temp/${Q}/${Q}_all_merged_header_sub_csv.csv # remove .csv in first column
+cp temp/${Q}/${Q}_all_merged_header_sub_csv.csv $ANALYSIS_DIR/${Q}.csv # copy group data to main analysis directory 
 done
 
-# for each copy file, delete first row 
-
-# CREATE HEADER
-# copy another data frame and replace filename on top row with "IID" (this will be the header)
-sed '1s/Seq. Name/transcript_id/' <filename> > temp/header
-# delete second row
-
-# CONCATENATE 
-# for each questionnaire, stack tables vertically across header + subjects
-header a.txt b.txt > out.txt
-
-rm -r temp
-
-
+rm -r temp # delete temporary directory
