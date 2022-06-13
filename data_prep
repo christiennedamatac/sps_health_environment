@@ -3,15 +3,15 @@
 PROJECT_DIR=~/Desktop
 ANALYSIS_DIR=$PROJECT_DIR/analysis_sps_health_environment
 SUBJECTS=$ANALYSIS_DIR/subject_list_24-05-2022
-QUESTIONNAIRES="ASR ATQ BIG CTQ IDS OCM PSS SLS SPS STS UBO"
+QUESTIONNAIRES="ASR ATQ BIG CTQ IDS OCM PSS SLS SPS STS UBO LIS"
 
 cd $ANALYSIS_DIR
 rm -r temp
 $QUESTIONNAIRES
-for Q in SPS; do
+for Q in LIS; do
 mkdir -p temp temp/${Q} # create a temporary directory for each questionnaire
-for FILE in ${Q}/*.csv; do 
-awk '{print FILENAME","$0}' $FILE > temp/$FILE.copy # insert filename as first column
+for FILE in *.csv; do 
+awk '{print FILENAME","$0}' $FILE > temp/${Q}/$FILE.copy # insert filename as first column
 done
 cat temp/${Q}/* > temp/${Q}/${Q}_all_merged.csv # concatenate all subject tables vertically
 awk '/Completion_Date/&&c++>0 {next} 1' temp/${Q}/${Q}_all_merged.csv > temp/${Q}/${Q}_all_merged_header.csv # remove every row that matches this pattern except for the first instance

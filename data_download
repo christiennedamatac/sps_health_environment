@@ -13,7 +13,7 @@ echo "Singularity container ("Apptainer") is now the bash shell; /home and /proj
 # https://gitlab.pep.cs.ru.nl/pep-public/user-docs/-/wikis/Uploading-and-downloading-data#downloading-data
 PROJECT_DIR=~/Desktop
 TOKEN=ChristienneDamatac_SensoryProcessingSensitivity.json
-DATA_DIR=$PROJECT_DIR/pulled-data_2022_05_24
+DATA_DIR=$PROJECT_DIR/pulled-data_$(date +"%d-%m-%Y")
 cd $PROJECT_DIR
 mkdir -p $DATA_DIR
 /app/pepcli --client-working-directory /config --oauth-token $TOKEN pull -o $DATA_DIR -P Participants.300pps -C post_qst_sensory_processing_sensitivity -C pre_qst_SLS_3 -C post_qst_OCM_3 -C post_qst_adults_ADHD_self-report_scale -C post_qst_autistic_traits -C post_qst_IDS_3 -C post_qst_STS_3 -C post_qst_PSS_3 -C post_qst_UBO_3 -C post_qst_CTQ_2 -C post_qst_BIG-5_NEO-FFI-3 -C pre_qst_LISS_background_variables
@@ -22,7 +22,7 @@ exit
 # RENAME
 
 PROJECT_DIR=~/Desktop
-DATA_DIR=$PROJECT_DIR/pulled-data_2022_05_24
+DATA_DIR=$PROJECT_DIR/pulled-data_$(date +"%d-%m-%Y")
 ANALYSIS_DIR=$PROJECT_DIR/analysis_sps_health_environment
 cd $DATA_DIR
 while read HBS IID; do
