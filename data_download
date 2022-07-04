@@ -16,7 +16,7 @@ TOKEN=ChristienneDamatac_SensoryProcessingSensitivity.json
 DATA_DIR=$PROJECT_DIR/pulled-data_$(date +"%d-%m-%Y")
 cd $PROJECT_DIR
 mkdir -p $DATA_DIR
-/app/pepcli --client-working-directory /config --oauth-token $TOKEN pull -o $DATA_DIR -P Participants.300pps -C post_qst_sensory_processing_sensitivity -C pre_qst_SLS_3 -C post_qst_OCM_3 -C post_qst_adults_ADHD_self-report_scale -C post_qst_autistic_traits -C post_qst_IDS_3 -C post_qst_STS_3 -C post_qst_PSS_3 -C post_qst_UBO_3 -C post_qst_CTQ_2 -C post_qst_BIG-5_NEO-FFI-3 -C pre_qst_LISS_background_variables
+/app/pepcli --client-working-directory /config --oauth-token $TOKEN pull -o $DATA_DIR -P Participants.300pps C post_qst_BIG-5_NEO-FFI-3 -C post_qst_CTQ_2 -C post_qst_DHU_3 -C post_qst_HEC_3 -C post_qst_IDS_3 -C post_qst_LIE -C post_qst_MPD_3 -C post_qst_OCM_3 -C post_qst_PSS_3 -C post_qst_STS_3 -C post_qst_UBO_3 -C post_qst_adults_ADHD_self-report_scale -C post_qst_autistic_traits -C post_qst_sensory_processing_sensitivity -C pre_qst_LISS_background_variables -C pre_qst_SLS_3
 exit
 
 # RENAME

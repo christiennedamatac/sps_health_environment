@@ -3,21 +3,25 @@
 PROJECT_DIR=~/Desktop
 ANALYSIS_DIR=$PROJECT_DIR/analysis_sps_health_environment
 SUBJECTS=$ANALYSIS_DIR/subject_list_24-05-2022
-QUESTIONNAIRES="ASR ATQ BIG CTQ IDS OCM PSS SLS SPS STS UBO LIS"
+QUESTIONNAIRES="DHU HEC MPD LIE_1 LIE_2 LIE_3"
 
 cd $ANALYSIS_DIR
 rm -r temp
-$QUESTIONNAIRES
-for Q in LIS; do
+echo $QUESTIONNAIRES
+
+for Q in $QUESTIONNAIRES; do
 mkdir -p temp temp/${Q} # create a temporary directory for each questionnaire
-for FILE in *.csv; do 
-awk '{print FILENAME","$0}' $FILE > temp/${Q}/$FILE.copy # insert filename as first column
+
+for F in *_${Q}_*.csv; do 
+awk '{print FILENAME","$0}' ${F} > temp/${Q}/${F}.copy # insert filename as first column
 done
+
 cat temp/${Q}/* > temp/${Q}/${Q}_all_merged.csv # concatenate all subject tables vertically
 awk '/Completion_Date/&&c++>0 {next} 1' temp/${Q}/${Q}_all_merged.csv > temp/${Q}/${Q}_all_merged_header.csv # remove every row that matches this pattern except for the first instance
 awk '{sub(/.*sub/,"sub",$1); print}' temp/${Q}/${Q}_all_merged_header.csv > temp/${Q}/${Q}_all_merged_header_sub.csv # remove everything before "sub" in the first column
 awk '{ sub(/\.csv/, "", $1) }1' temp/${Q}/${Q}_all_merged_header_sub.csv > temp/${Q}/${Q}_all_merged_header_sub_csv.csv # remove .csv in first column
 cp temp/${Q}/${Q}_all_merged_header_sub_csv.csv $ANALYSIS_DIR/${Q}.csv # copy group data to main analysis directory 
+
 done
 
 rm -r temp # delete temporary directory
