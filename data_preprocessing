@@ -1,3 +1,5 @@
+#USAGE: concatenates individual data tables across subjects for each questionnaire questionnaire 
+
 #!/bin/bash
 
 PROJECT_DIR=~/Desktop
