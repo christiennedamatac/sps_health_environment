@@ -39,10 +39,10 @@ names(data)
 # remove all participants that did not complete the SPS questionnaire
 data <- data[!is.na(data$SPS_sum),]
 
-# remove outliers more than 3 standard deviations away from the mean, standardize, and replace with NA
+# remove outliers more than 3 standard deviations away from the mean and replace with NA
 data[,-1] <- lapply(data[, -1], function(x) replace(x, abs(scale(x))>3, NA))
 
-# mean center (demean) all variables
+# mean center (demean) all variables and standardize
 names(data) # check column number
 data_mean_centered <- sapply(data[c(2:27)], function(x) scale(x, scale=TRUE))
 sum_questionnaires_clean_mean <- data_mean_centered
