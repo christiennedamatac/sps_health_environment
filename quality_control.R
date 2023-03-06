@@ -7,7 +7,6 @@ library(reshape2)
 library(ggpubr)
 
 # import data
-setwd("/Volumes/wd_elements_5tb/postdoc/1_sps_health_environment/data/all_subjects_by_questionnaire/questionnaires_separated")
 data_files <- c("ASR.csv","ATQ_recoded.csv","BIG.csv","CTQ.csv",'DHU.csv', 'HEC.csv', "IDS.csv", 'LIE_3.csv', 'LIS.csv', 'MDP.csv', "OCM.csv","PSS.csv","SLS.csv","SPS-24.csv","STS.csv","UBO.csv")
 
 # read all questionnaire files into separate data frames
