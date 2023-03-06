@@ -18,7 +18,6 @@ df_list <- list(df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, d
 # merge all questionnaire data frames
 all_questionnaires <- Reduce(function(x, y) merge(x, y, by=c("IID"), all=TRUE), df_list)
 names(all_questionnaires)[names(all_questionnaires) == "sex"] <- "sex_M1_F2" # rename column
-setwd("/Volumes/wd_elements_5tb/postdoc/1_sps_health_environment/data/all_subjects_by_questionnaire")
 names(all_questionnaires) 
 
 # subset only columns of interest 
